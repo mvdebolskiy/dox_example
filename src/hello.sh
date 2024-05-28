@@ -1,8 +1,12 @@
 #!/bin/bash
 
-# script to be called by wrap_srun+preproc.sh
 
 SCRIPT=$( basename  "$0" )
+
+#!! Example script on how to use options and arguments in bash
+#!!@note
+#!! in example.md `extra_filetypes: sh #!` means you need `#!!` for ford to parse
+#!!@endnote
 
 
 # functions for output
@@ -18,11 +22,12 @@ function usage
 {
 
     local txt=(
-"Usage: $SCRIPT [options] [arguments]"
+"Usage: $SCRIPT [options] STRING1 STRING2 ... STRINGN"
 ""
 "Options:"
-"  --help, -h          Print help."
-"  --who, -w           Who to say hello to"
+"  --help, -h            Print help."
+"  --who, -w             Who to say hello to"
+"  STRING1 ... STRINGN   any number of strings separated by space to print after hello"
 
 ""
 "  defaults are:"
@@ -48,7 +53,7 @@ who=""
 
 
 #process arguments
-PARSEDARGS=$(getopt -o h:w --long help,who -- "$@")
+PARSEDARGS=$(getopt -o hw: --long help,who: -- "$@")
 
 if [ "$?" != "0" ]; then
   badusage
@@ -56,21 +61,28 @@ fi
 
 eval set -- "$PARSEDARGS"
 
+# check for options and get all positional arguments into one big string.
 while true; do
     case $1 in
       --help | -h)
         help
         exit;;
-      --GCM | -g)
+      --who | -w)
         who=$2 ; shift 2 ;;
-      --) shift ; break ;;
+
+      -- ) posargs=$@ ;shift ; break ;;
+
       *) badusage "$1" ; shift ; exit ;;
     esac
 done
 
+# convert posargs into an array
+FS=' ' read -r -a posargs <<< "$posargs"
 
+# pop the first element (--)
+posargs=("${posargs[@]:1}")
 
-# errors when vars are not set by args
+# Print when who is set to default
 
 if [[ -z "$who" ]] ; then
     echo
@@ -85,3 +97,9 @@ fi
 
 
 echo "Hello ${who}!!"
+
+#Loop through strings and print them
+for str in "${posargs[@]}"
+do
+    echo "$str"
+done
