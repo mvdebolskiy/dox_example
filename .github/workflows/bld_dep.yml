@@ -63,7 +63,7 @@ jobs:
         # _gh-pages/branch-* paths, and not including
         # _gh-pages itself.
         find _gh-pages/ -mindepth 1 ! -path '_gh-pages/branch*' -delete
-        rsync -a doc _gh-pages/
+        rsync -a doc/ _gh-pages/
     # Deploy
       # https://github.com/peaceiris/actions-gh-pages
     - name: Deploy
