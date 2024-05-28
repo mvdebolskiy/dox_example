@@ -12,7 +12,7 @@ jobs:
     - name: get_graphviz
       run: sudo apt-get install -y graphviz
     - name: checkout
-      uses: actions/checkout@v1
+      uses: actions/checkout@v4
     - name: Install Python
       uses: actions/setup-python@v2
       with:
@@ -57,7 +57,7 @@ jobs:
     - name: build ford
       run: ford example.md
     - name: Copy new build (master)
-      if: ${{ ( github.event_name == 'push' || github.event_name == 'workflow_dispatch' ) && github.ref == 'refs/heads/master' }}
+      if: ${{ ( github.event_name == 'push' || github.event_name == 'workflow_dispatch' ) }}
       run: |
         set -x
         # Delete everything under _gh-pages/ that is from the
@@ -70,7 +70,7 @@ jobs:
       # https://github.com/peaceiris/actions-gh-pages
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3
-      if: ${{ github.event_name == 'workflow_dispatch' || ( github.event_name == 'push' && github.ref == 'refs/heads/master' ) }}
+      if: ${{ github.event_name == 'workflow_dispatch' }}
       with:
         publish_branch: gh-pages
         github_token: ${{ secrets.GITHUB_TOKEN }}
