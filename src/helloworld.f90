@@ -1,5 +1,5 @@
 program hello_world
-  !! This is hello_world program
+  !! This is hello_world program `hello.f90`
 
   use mathmod
 

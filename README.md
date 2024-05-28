@@ -6,3 +6,5 @@ USAGE:
   `ford ./example.md`
 
 [Fortran Documentation Wiki](https://en.wikibooks.org/wiki/Fortran/Documenting_Fortran)
+
+[FORD Documentation](https://forddocs.readthedocs.io/en/latest/index.html)
